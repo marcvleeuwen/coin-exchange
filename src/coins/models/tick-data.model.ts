@@ -1,4 +1,4 @@
-import {Monetary} from "./monetary.model";
+import {Monetary} from './monetary.model';
 
 export interface TickData {
     type: string;

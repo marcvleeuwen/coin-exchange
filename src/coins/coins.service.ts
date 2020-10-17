@@ -28,33 +28,33 @@ export class CoinsService {
 
     public init(): void {
         this.ccStreamer.on('open', () => {
-            this.createStream(CC_ACTIONS.SUB_ADD, CC_TYPES.TICKER);
+            this.createStream(this.ccStreamer, CC_ACTIONS.SUB_ADD, CC_TYPES.TICKER);
         });
     }
 
-    private createStream(action: CC_ACTIONS, channel: CC_TYPES): void {
-        if (!this.ccStreamer.readyState == WebSocket.open) {
-            this.ccStreamer.close;
+    public createStream(webSocket: WebSocket, action: CC_ACTIONS, channel: CC_TYPES): void {
+        if (!webSocket.readyState == WebSocket.open) {
+            webSocket.close;
         }
         const subRequest: SubRequest = CoinsService.formatRequest(action, channel, this.coins, this.currencies, this.exchanges);
-        this.ccStreamer.send(JSON.stringify(subRequest));
+        webSocket.send(JSON.stringify(subRequest));
     }
 
     // TODO: add ability to change coins on the fly - Requires DB
-    // onCoinsChange(coins: Array<string>): void {
+    // public onCoinsChange(coins: Array<string>): void {
     //     this.coins = [...this.coins, ...coins];
-    //     this.createStream(CC_ACTIONS.SUB_ADD, CC_TYPES.TICKER);
+    //     this.createStream(this.ccStreamer, CC_ACTIONS.SUB_ADD, CC_TYPES.TICKER);
     // }
     //
     // TODO: add ability to change currencies on the fly - Requires DB
-    // onCurrenciesChange(currencies: Array<string>): void {
+    // public onCurrenciesChange(currencies: Array<string>): void {
     //     this.currencies = [...this.currencies, ...currencies];
-    //     this.createStream(CC_ACTIONS.SUB_ADD, CC_TYPES.TICKER);
+    //     this.createStream(this.ccStreamer, CC_ACTIONS.SUB_ADD, CC_TYPES.TICKER);
     // }
     //
     // TODO: add ability to change exchanges on the fly - Requires DB
-    // onExchangesChange(exchanges: Array<string>): void {
+    // public onExchangesChange(exchanges: Array<string>): void {
     //     this.exchanges = [...this.exchanges, ...exchanges];
-    //     this.createStream(CC_ACTIONS.SUB_ADD, CC_TYPES.TICKER);
+    //     this.createStream(this.ccStreamer, CC_ACTIONS.SUB_ADD, CC_TYPES.TICKER);
     // }
 }
