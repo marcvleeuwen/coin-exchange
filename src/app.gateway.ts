@@ -1,6 +1,6 @@
-import {OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer} from '@nestjs/websockets';
+import {OnGatewayInit, WebSocketGateway, WebSocketServer} from '@nestjs/websockets';
 import {Logger} from '@nestjs/common';
-import {Server, Socket} from 'socket.io';
+import {Server} from 'socket.io';
 import {CoinsService} from './coins/coins.service';
 import {RawTickData, TickData} from './coins/models/tick-data.model';
 import {MapperUtils} from './coins/utils/mapper.util';
@@ -25,14 +25,9 @@ export class AppGateway implements OnGatewayInit {
         });
     }
 
-    @SubscribeMessage('msgToServer')
-    handleMessage(client: Socket, text: string): void {
-        this.server.emit('msgToClient', text);
-    }
-
     handleTickData(data: string): void {
         const dataObject = JSON.parse(data);
-        if (dataObject["TYPE"] == CC_TYPES.TICKER) {
+        if (dataObject['TYPE'] == CC_TYPES.TICKER) {
             const rawData: RawTickData = <RawTickData>JSON.parse(data);
             const normalizedData: TickData = MapperUtils.normalizeTickData(rawData);
             // this.logger.log(normalizedData.amount);
